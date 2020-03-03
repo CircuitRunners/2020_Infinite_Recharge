@@ -87,38 +87,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testPeriodic() {
-    Drivebase.drive(driver.getRawAxis(Logitech.AXIS_LEFTY), -driver.getRawAxis(Logitech.AXIS_RIGHTX));
-    SmartDashboard.putNumber("Base Encoder", Turret.base.getSelectedSensorPosition());
-    if(driver.getRawButton(Logitech.BTN_A)){
-      Intake.in();
-    } else {
-      Intake.stop();
-    }
-    if(driver.getRawButton(Logitech.BTN_X)){
-      Intake.up();
-    } else {
-      Intake.upStop();
-    }
-    if(Turret.speed >= 0 && driver.getRawButton(Logitech.BTN_LEFT_BUMPER)){
-      Turret.speed -= 0.01;
-    } else if(Turret.speed <= 1 && driver.getRawButton(Logitech.BTN_RIGHT_BUMPER)){
-      Turret.speed += 0.01;
-    }
-    if(driver.getRawButton(Logitech.BTN_B)){
-      Camera.startTracking();
-      Turret.trackTurret();    
-    } else if(driver.getRawButton(Logitech.BTN_Y)){
-      Turret.shadowTurret();
-      Camera.stopTracking();
-    } else {
-      Turret.idleTurret();
-      Camera.stopTracking();
-    }
 
-    Turret.manualTurret();
-    Turret.commandBase();
-    Camera.display();
-    SmartDashboard.putNumber("FlyWheel Speed", Turret.base.getSelectedSensorVelocity());
   }
 
   private static void getControllers(){
