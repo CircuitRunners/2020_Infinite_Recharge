@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Turret {
     public static TalonSRX base;
     public static TalonSRX flywheel;
-    //private static TalonSRX flywheel_slave;
+    private static TalonSRX flywheel_slave;
     private static DigitalInput limit;
 
     private static int basePosition = 0;
@@ -41,20 +41,22 @@ public class Turret {
     public static void init(){
         base = new TalonSRX(17);
         flywheel = new TalonSRX(18);
-        //flywheel_slave = new TalonSRX(19);
+        flywheel_slave = new TalonSRX(19);
 
         configTalon(base, false);
-        configTalon(flywheel, true);
+        configTalon(flywheel, false);
+
         flywheel.setInverted(true);
+        flywheel_slave.setInverted(true);
         base.setInverted(true);
         base.setSensorPhase(false);
-        //configTalon(flywheel_slave, false);
+        configTalon(flywheel_slave, false);
 
-        //flywheel_slave.follow(flywheel);
+        flywheel_slave.follow(flywheel);
 
         limit = new DigitalInput(0);
-        //mode = INIT;
-        mode = IDLE;
+        mode = INIT;
+        //mode = IDLE;
         speed = 0;
         base.setSelectedSensorPosition(0);
     }

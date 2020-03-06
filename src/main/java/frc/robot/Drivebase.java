@@ -13,7 +13,9 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -36,10 +38,13 @@ public class Drivebase {
   public static final int LEFT2_ID = 11;
   public static final int RIGHT1_ID = 12;
   public static final int RIGHT2_ID = 13;
-  static ADXRS450_Gyro gyro;
+  public static ADXRS450_Gyro gyro;
   private static DifferentialDrive drive;
-  public DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.55245);
-  public DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
+  public static DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(0.55245);
+  public static DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
+  //SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(ks, kv, ka);
+  PIDController leftPID = new PIDController(0,0,0);
+  PIDController rightPID = new PIDController(0, 0, 0);
   public static Pose2d position = new Pose2d();
 
   private static final int METERS_TO_CLICKS = 000;//math this out pls
@@ -120,8 +125,8 @@ public class Drivebase {
     falcon.setNeutralMode(NeutralMode.Brake);
   }
 
-  public Rotation2d getHeading(){
-    return Rotation2d.fromDegrees(-gyro.getAngle());
+  public static Rotation2d getHeading(){
+    return Rotation2d.fromDegrees(/*-gyro.getAngle()*/0);
   }
 
   public static DifferentialDriveWheelSpeeds getSpeeds(){

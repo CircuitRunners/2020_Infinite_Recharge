@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
     //Camera.init();
     Turret.init();
     Intake.init();
+    Indexer.init();
     compressor.setClosedLoopControl(true);
   }
 
@@ -62,7 +63,7 @@ public class Robot extends TimedRobot {
     }
     Turret.manualTurret(); 
     SmartDashboard.putNumber("Base angle", Turret.angle);
-    
+    SmartDashboard.putNumber("Speed", Turret.flywheel.getSelectedSensorVelocity());
     if(driver.getRawButton(Logitech.BTN_LEFT_BUMPER)){
       Turret.angle -= 1;
     } else if(driver.getRawButton(Logitech.BTN_RIGHT_BUMPER)){
