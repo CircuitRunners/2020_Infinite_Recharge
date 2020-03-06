@@ -80,6 +80,9 @@ public class Robot extends TimedRobot {
       Intake.stop();
       Indexer.stop();
     }
+    if(driver.getRawButton(Logitech.BTN_X)){
+      Turret.fire();
+    }
   }
 
   @Override

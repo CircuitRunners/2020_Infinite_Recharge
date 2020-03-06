@@ -22,9 +22,8 @@ public class Indexer {
     static DigitalInput pos0 = new DigitalInput(1);
     static DigitalInput pos1 = new DigitalInput(2);
     static DigitalInput pos2 = new DigitalInput(3);   
-    static DigitalInput pos3 = new DigitalInput(4);
-    static DigitalInput pos4 = new DigitalInput(5);
-    static DigitalInput waiting = new DigitalInput(6);
+    static DigitalInput waiting = new DigitalInput(4);
+ 
 
     static TalonSRX indexer;
     public static void init(){
@@ -34,31 +33,23 @@ public class Indexer {
 
     public static void run(){
         if(waiting.get()){
-            if(!balls[4]){
-                flags[4] = true;
-            } else if(!balls[3]){
-                flags[3] = true;
-            } else if(!balls[2]){
+            if(!balls[2]){
                 flags[2] = true;
             } else if(!balls[1]){
                 flags[1] = true;
             } else if(!balls[0]){
                 flags[0] = true;
-            }   
+            } else {
+                flags[3] = true;
+            }
         }
         update();
-        if(flags[4]){
-            indexer.set(ControlMode.PercentOutput, 0.3);
-            if(balls[4]){
-                flags[4] = false;
-                indexer.set(ControlMode.PercentOutput, 0);
-            }
-        } else if(flags[3]){
-            indexer.set(ControlMode.PercentOutput, 0.3);
-            if(balls[3]){
+        if(flags[3]){
+            Intake.disableIntake();
+            if(!balls[3]){
+                Intake.enableIntake();
                 flags[3] = false;
-                indexer.set(ControlMode.PercentOutput, 0);
-            }         
+            }       
         } else if(flags[2]){
             indexer.set(ControlMode.PercentOutput, 0.3);
             if(balls[2]){
@@ -83,8 +74,7 @@ public class Indexer {
         balls[0] = pos0.get();
         balls[1] = pos1.get();
         balls[2] = pos2.get();
-        balls[3] = pos3.get();
-        balls[4] = pos4.get();
+        balls[3] = waiting.get();
     }
     public static void up(){
         indexer.set(ControlMode.PercentOutput, 0.3);
@@ -94,5 +84,9 @@ public class Indexer {
     }
     public static void stop(){
         indexer.set(ControlMode.PercentOutput, 0);
+    }
+
+    public static void fire(){
+        indexer.set(ControlMode.PercentOutput, 1);
     }
 }

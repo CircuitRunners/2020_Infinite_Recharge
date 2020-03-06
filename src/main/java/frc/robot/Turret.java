@@ -37,6 +37,7 @@ public class Turret {
     public static final int SHADOW = 300;
     public static final int INIT = 400;
     public static int mode = 0;
+    private static boolean flywheelIsAtSpeed = false;
 
     public static void init(){
         base = new TalonSRX(17);
@@ -142,9 +143,11 @@ public class Turret {
         lastGyroAngle = gyroAngle;
     }
 
-    private static void commandTurret(int input){
-        //flywheel.set(ControlMode.Velocity, 3700);
-        
+    public static void fire(){
+        if(flywheelIsAtSpeed && Camera.targetLocked){
+            Intake.fire();
+            Indexer.fire();
+        }
     }
 
     private static void configTalon(TalonSRX thisTalon, boolean inverted){

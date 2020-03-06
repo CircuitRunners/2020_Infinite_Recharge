@@ -8,7 +8,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -23,6 +22,8 @@ public class Intake {
     private static TalonSRX funnelLeft;
     private static TalonSRX funnelRight;
     private static Solenoid intakeSolenoid = new Solenoid(1);
+
+    private static boolean fullIndexer = false;
     public static void init(){
         intake = new TalonSRX(14);
         funnelLeft = new TalonSRX(15);
@@ -36,20 +37,37 @@ public class Intake {
 
     public static void in(){
         intake.set(ControlMode.PercentOutput,-0.75);
-        funnelLeft.set(ControlMode.PercentOutput, -.75);
-        funnelRight.set(ControlMode.PercentOutput, .75);
+        if(!fullIndexer){
+            funnelLeft.set(ControlMode.PercentOutput, -.75);
+            funnelRight.set(ControlMode.PercentOutput, .75);
+        }
+
         intakeSolenoid.set(true);
     }
     public static void out(){
         intake.set(ControlMode.PercentOutput, 0.75);
-        funnelLeft.set(ControlMode.PercentOutput, 0.75);
-        funnelRight.set(ControlMode.PercentOutput, -0.75);
+        if(!fullIndexer){
+            funnelLeft.set(ControlMode.PercentOutput, 0.75);
+            funnelRight.set(ControlMode.PercentOutput, -0.75);
+        }
         intakeSolenoid.set(false);
     }
     public static void stop(){
         intake.set(ControlMode.PercentOutput, 0);
         funnelLeft.set(ControlMode.PercentOutput, 0);
         funnelRight.set(ControlMode.PercentOutput, 0);
+    }
+
+    public static void disableIntake(){
+        fullIndexer = true;
+    }
+    public static void enableIntake(){
+        fullIndexer = false;
+    }
+
+    public static void fire(){
+        funnelLeft.set(ControlMode.PercentOutput, -1);
+        funnelRight.set(ControlMode.PercentOutput, 1);
     }
 
     private static void configTalon(TalonSRX thisTalon, boolean inverted){
